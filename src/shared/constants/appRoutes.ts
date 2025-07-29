@@ -1,3 +1,3 @@
-export const APP_ROUTES = {
-    main: "/"
+export const appRoutes = {
+    MAIN_ROUTE: "/"
 }
