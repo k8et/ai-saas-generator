@@ -6,8 +6,8 @@ import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { motion} from 'framer-motion'
 import { cn } from '@shared/lib/utils'
-import { UserPayload } from '@/app/dashboard/layout'
 import {appRoutes} from "@shared/constants/appRoutes";
+import {UserPayload} from "@shared/lib/getUserFromCookie";
 
 interface NavItem {
     href: string
