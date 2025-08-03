@@ -2,6 +2,8 @@ import { ReactNode } from 'react'
 import { cookies } from 'next/headers'
 import { jwtVerify } from 'jose'
 import { Sidebar } from '@/app/dashboard/sidebar'
+import {db} from "@/db";
+import {telegramPosts} from "@/db/schema";
 
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!)
 
@@ -29,6 +31,8 @@ export async function getUserFromCookie(): Promise<UserPayload | null> {
 
 export default async function Layout({ children }: { children: ReactNode }) {
   const user = await getUserFromCookie()
+  const posts = await db.select().from(telegramPosts);
+  console.log(posts,"posts")
 
   return (
     <div className='flex min-h-screen'>
