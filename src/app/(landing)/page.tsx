@@ -77,7 +77,7 @@ export default function Page() {
             дедлайнов.
           </p>
           <ProgressLink
-            href={appRoutes.MAIN_ROUTE}
+            href={appRoutes.AUTH_ROUTE}
             className={buttonVariants({ variant: 'secondary', size: 'lg' })}
           >
             Вперёд

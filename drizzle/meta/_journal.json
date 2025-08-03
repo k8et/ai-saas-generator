@@ -1,0 +1,27 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1754149922250,
+      "tag": "0000_fixed_captain_midlands",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1754152174903,
+      "tag": "0001_green_rocket_raccoon",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1754159580662,
+      "tag": "0002_whole_baron_strucker",
+      "breakpoints": true
+    }
+  ]
+}
