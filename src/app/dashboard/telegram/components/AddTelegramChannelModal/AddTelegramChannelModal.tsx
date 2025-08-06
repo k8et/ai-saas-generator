@@ -16,6 +16,7 @@ import {
   TelegramChannelSchema,
 } from '@/app/dashboard/telegram/components/AddTelegramChannelModal/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { addTelegramChannel } from '@/app/dashboard/telegram/components/AddTelegramChannelModal/actions'
 
 export const AddTelegramChannelModal = () => {
   const [open, setOpen] = useState(false)
@@ -23,13 +24,25 @@ export const AddTelegramChannelModal = () => {
   const {
     register,
     handleSubmit,
+    setError,
+      reset,
     formState: { errors, isSubmitting },
   } = useForm<TelegramChannelSchema>({
     resolver: zodResolver(telegramChannelSchema),
   })
 
   const onSubmit = async (data: TelegramChannelSchema) => {
-    console.log('📨 Добавление канала:', data)
+    const res = await addTelegramChannel(data)
+    console.log(res,"res")
+    if ('error' in res) {
+      setError('channel', {
+        type: 'server',
+        message: res.message || 'Не удалось добавить канал',
+      })
+      return
+    }
+    reset()
+    setOpen(false)
   }
 
   return (
@@ -49,34 +62,33 @@ export const AddTelegramChannelModal = () => {
           <DialogHeader>
             <DialogTitle>Добавить Telegram канал</DialogTitle>
           </DialogHeader>
-          <form id="telegram-channel-form" onSubmit={handleSubmit(onSubmit)} className="space-y-2">
+          <form id='telegram-channel-form' onSubmit={handleSubmit(onSubmit)} className='space-y-2'>
             <Input
-                label="Название канала"
-                placeholder="@example_channel"
-                {...register('channel')}
-                error={errors.channel?.message}
+              label='Название канала'
+              placeholder='@example_channel'
+              {...register('channel')}
+              error={errors.channel?.message}
             />
           </form>
 
           <DialogFooter>
             <Button
-                className="sm:w-[40%]"
-                type="button"
-                variant="secondary"
-                onClick={() => setOpen(false)}
+              className='sm:w-[40%]'
+              type='button'
+              variant='secondary'
+              onClick={() => setOpen(false)}
             >
               Отмена
             </Button>
             <Button
-                form="telegram-channel-form"
-                disabled={isSubmitting}
-                className="sm:w-[60%]"
-                type="submit"
+              form='telegram-channel-form'
+              isLoading={isSubmitting}
+              className='sm:w-[60%]'
+              type='submit'
             >
               Добавить
             </Button>
           </DialogFooter>
-
         </DialogPanel>
       </Dialog>
     </>
