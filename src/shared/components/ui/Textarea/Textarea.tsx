@@ -30,7 +30,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
                     aria-invalid={!!error || undefined}
                     data-slot="textarea"
                     className={cn(
-                        'flex min-h-16 w-full resize-none rounded-lg border bg-transparent px-3 py-2 text-base  transition-[color,box-shadow] outline-none md:text-sm',
+                        'flex min-h-25 w-full resize-none rounded-lg border bg-transparent px-3 py-2 text-base  transition-[color,box-shadow] outline-none md:text-sm',
                         'placeholder:text-muted-foreground file:text-foreground',
                         'selection:bg-primary selection:text-primary-foreground',
                         'dark:bg-input/30',

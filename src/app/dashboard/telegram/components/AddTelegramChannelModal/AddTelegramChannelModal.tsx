@@ -17,6 +17,8 @@ import {
 } from '@/app/dashboard/telegram/components/AddTelegramChannelModal/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { addTelegramChannel } from '@/app/dashboard/telegram/components/AddTelegramChannelModal/actions'
+import {mutate} from "swr";
+import {TELEGRAM_CHANNELS_KEY} from "@/app/dashboard/telegram/hooks";
 
 export const AddTelegramChannelModal = () => {
   const [open, setOpen] = useState(false)
@@ -33,7 +35,6 @@ export const AddTelegramChannelModal = () => {
 
   const onSubmit = async (data: TelegramChannelSchema) => {
     const res = await addTelegramChannel(data)
-    console.log(res,"res")
     if ('error' in res) {
       setError('channel', {
         type: 'server',
@@ -41,6 +42,7 @@ export const AddTelegramChannelModal = () => {
       })
       return
     }
+    await mutate(TELEGRAM_CHANNELS_KEY)
     reset()
     setOpen(false)
   }

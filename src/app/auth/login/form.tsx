@@ -43,7 +43,7 @@ export const LoginForm = () => {
                 error={errors.password?.message}
             />
 
-            <Button className='mt-2' type='submit' disabled={isSubmitting}>
+            <Button className='mt-2' type='submit' isLoading={isSubmitting}>
                 Войти
             </Button>
         </form>

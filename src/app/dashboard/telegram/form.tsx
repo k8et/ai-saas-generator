@@ -7,8 +7,25 @@ import { TelegramSchema, telegramSchema } from '@/app/dashboard/telegram/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AddTelegramChannelModal } from '@/app/dashboard/telegram/components/AddTelegramChannelModal/AddTelegramChannelModal'
 import { generateAndSendPost } from '@/app/dashboard/telegram/actions'
+import { useTelegramChannels } from '@/app/dashboard/telegram/hooks'
+
+const styleOptions = [
+  { label: 'Формальный', value: 'formal' },
+  { label: 'Разговорный', value: 'casual' },
+  { label: 'Ироничный', value: 'ironic' },
+  { label: 'Эмоциональный', value: 'emotional' },
+  { label: 'Информативный', value: 'informative' },
+  { label: 'Провокационный', value: 'provocative' },
+  { label: 'Мотивационный', value: 'motivational' },
+  { label: 'Экспертный', value: 'expert' },
+  { label: 'Рекламный', value: 'promo' },
+  { label: 'Новостной', value: 'news' },
+  { label: 'Технический', value: 'technical' },
+  { label: 'Юмористический', value: 'funny' },
+]
 
 export const TelegramForm = () => {
+  const { data: channels = [], isLoading } = useTelegramChannels()
   const {
     register,
     control,
@@ -24,9 +41,9 @@ export const TelegramForm = () => {
       description: '',
     },
   })
+
   const onSubmit = async (data: TelegramSchema) => {
-    const res = await generateAndSendPost(data)
-    console.log(res, 'res')
+    await generateAndSendPost(data)
   }
 
   return (
@@ -49,7 +66,7 @@ export const TelegramForm = () => {
               name={field.name}
               label='Стиль'
               placeholder='Выберите стиль...'
-              options={[{ label: 'Формальный', value: 'formal' }]}
+              options={styleOptions}
               error={errors.style?.message}
             />
           )}
@@ -60,20 +77,21 @@ export const TelegramForm = () => {
           control={control}
           render={({ field }) => (
             <Select
+              isLoading={isLoading}
               value={field.value}
               onChange={field.onChange}
               name={field.name}
               label='Телеграм канал'
               placeholder='Выбирете телеграм канал...'
-              options={[{ label: '@creon_ai_news', value: '@creon_ai_news' }]}
+              options={channels}
               error={errors.tg_chanel?.message}
             />
           )}
         />
 
         <Controller
-          name='emoji'
           control={control}
+          name='emoji'
           render={({ field }) => (
             <Checkbox
               label={'Сгенерировать с эмодзи'}
