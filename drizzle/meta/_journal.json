@@ -29,6 +29,20 @@
       "when": 1754234995309,
       "tag": "0003_fuzzy_talon",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1754327120399,
+      "tag": "0004_glorious_omega_sentinel",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1754439478694,
+      "tag": "0005_breezy_wiccan",
+      "breakpoints": true
     }
   ]
 }

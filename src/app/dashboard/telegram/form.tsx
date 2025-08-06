@@ -13,7 +13,7 @@ export const TelegramForm = () => {
     register,
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<TelegramSchema>({
     resolver: zodResolver(telegramSchema),
     defaultValues: {
@@ -65,7 +65,7 @@ export const TelegramForm = () => {
               name={field.name}
               label='Телеграм канал'
               placeholder='Выбирете телеграм канал...'
-              options={[{ label: '@tg_chanel', value: 'tg_chanel' }]}
+              options={[{ label: '@creon_ai_news', value: '@creon_ai_news' }]}
               error={errors.tg_chanel?.message}
             />
           )}
@@ -97,7 +97,7 @@ export const TelegramForm = () => {
           )}
         />
 
-        <Button className={'w-full'} type='submit'>
+        <Button isLoading={isSubmitting} className={'w-full'} type='submit'>
           Сгенерировать
         </Button>
       </form>

@@ -145,3 +145,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+#nprogress .bar {
+  background: var(--color-primary) !important;
+}

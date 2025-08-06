@@ -1,13 +1,13 @@
 'use client'
 
-import React, { useState} from 'react'
-import Link from 'next/link'
+import { useState} from 'react'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { motion} from 'framer-motion'
 import { cn } from '@shared/lib/utils'
 import {appRoutes} from "@shared/constants/appRoutes";
 import {UserPayload} from "@shared/lib/getUserFromCookie";
+import {ProgressLink} from "@shared/components/progress";
 
 interface NavItem {
     href: string
@@ -65,7 +65,7 @@ export const Sidebar = ({ user }: { user: UserPayload | null }) => {
                                 />
                             )}
 
-                            <Link
+                            <ProgressLink
                                 href={href}
                                 className={cn(
                                     'relative z-10 flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors',
@@ -76,7 +76,7 @@ export const Sidebar = ({ user }: { user: UserPayload | null }) => {
                             >
                                 <span>{icon}</span>
                                 <span>{label}</span>
-                            </Link>
+                            </ProgressLink>
                         </div>
                     )
                 })}

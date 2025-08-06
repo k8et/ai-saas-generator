@@ -23,4 +23,12 @@ export const telegramPosts = pgTable('telegram_posts', {
     tg_chanel: text('tg_chanel').notNull(),
     content: text('content').notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
+    image_url: text('image_url'),
+});
+
+
+export const telegramChannels = pgTable('telegram_channels', {
+    id: serial('id').primaryKey(),
+    channel: text('channel').notNull().unique(),
+    created_at: timestamp('created_at', { withTimezone: true }).defaultNow(),
 });
