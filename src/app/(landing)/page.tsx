@@ -1,4 +1,4 @@
-import { buttonVariants } from '@shared/components/ui'
+
 import { ProgressLink } from '@shared/components/progress'
 import { appRoutes } from '@shared/constants/appRoutes'
 import { BadgeDollarSign, BadgePercent, Palette, Send, Sparkles } from 'lucide-react'
@@ -77,8 +77,9 @@ export default function Page() {
             дедлайнов.
           </p>
           <ProgressLink
-            href={appRoutes.AUTH_ROUTE}
-            className={buttonVariants({ variant: 'secondary', size: 'lg' })}
+              href={appRoutes.AUTH_ROUTE}
+              variant="secondary"
+              size="lg"
           >
             Вперёд
           </ProgressLink>

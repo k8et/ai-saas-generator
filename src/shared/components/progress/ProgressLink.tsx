@@ -4,15 +4,22 @@ import {MouseEvent, ReactNode, AnchorHTMLAttributes, ForwardedRef, forwardRef} f
 import Link, {LinkProps} from 'next/link'
 import {usePathname} from 'next/navigation'
 import NProgress from 'nprogress'
+import {buttonVariants} from "@shared/components/ui";
+import {VariantProps} from "class-variance-authority";
 
 NProgress.configure({showSpinner: false})
 
-interface ProgressLinkProps extends LinkProps, Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> {
+type ButtonVariantProps = VariantProps<typeof buttonVariants>
+
+interface ProgressLinkProps extends
+    LinkProps,
+    Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>,
+    Partial<ButtonVariantProps> {
     children: ReactNode
 }
 
 export const ProgressLink = forwardRef(function ProgressLink(
-    {href, onClick, children, ...rest}: ProgressLinkProps,
+    {href, onClick, children,variant,size, ...rest}: ProgressLinkProps,
     ref: ForwardedRef<HTMLAnchorElement>
 ) {
     const pathname = usePathname()
@@ -29,7 +36,7 @@ export const ProgressLink = forwardRef(function ProgressLink(
     }
 
     return (
-        <Link href={href} ref={ref} onClick={handleClick} {...rest}>
+        <Link  className={buttonVariants({ variant, size })} href={href} ref={ref} onClick={handleClick} {...rest}>
             {children}
         </Link>
     )

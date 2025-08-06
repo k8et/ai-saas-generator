@@ -1,7 +1,7 @@
 'use server';
 
 import { db } from '@/db';
-import { telegramPosts } from '@/db/schema';
+import {telegramChannels, telegramPosts} from '@/db/schema';
 import { TelegramSchema, telegramSchema } from '@/app/dashboard/telegram/schema';
 import {
     formatTelegramPrompt,
@@ -56,4 +56,12 @@ export async function generateAndSendPost(data: TelegramSchema) {
     }
 
     return { content, image_url };
+}
+
+export async function getTelegramChannels() {
+    const rows = await db.select().from(telegramChannels)
+    return rows.map((r) => ({
+        value: r.channel,
+        label: r.channel,
+    }))
 }

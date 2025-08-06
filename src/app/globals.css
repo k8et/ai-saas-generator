@@ -149,3 +149,12 @@
 #nprogress .bar {
   background: var(--color-primary) !important;
 }
+
+.scroll-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scroll-hidden::-webkit-scrollbar {
+  display: none;
+}

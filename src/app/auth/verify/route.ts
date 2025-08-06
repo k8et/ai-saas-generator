@@ -11,7 +11,7 @@ export async function GET(req: Request) {
     const code = searchParams.get('code')
 
     if (!code) {
-        return NextResponse.json({ success: false, code: 'NO_CODE_PROVIDED' }, { status: 400 })
+        return NextResponse.json({ success: false, code: 'ERROR_NO_CODE_PROVIDED' }, { status: 400 })
     }
 
     const [record] = await db
@@ -20,7 +20,7 @@ export async function GET(req: Request) {
         .where(eq(emailVerification.code, code))
 
     if (!record || record.expiresAt < new Date()) {
-        return NextResponse.json({ success: false, code: 'CODE_INVALID_OR_EXPIRED' }, { status: 400 })
+        return NextResponse.json({ success: false, code: 'ERROR_CODE_INVALID_OR_EXPIRED' }, { status: 400 })
     }
 
     const [user] = await db
@@ -29,7 +29,7 @@ export async function GET(req: Request) {
         .where(eq(users.email, record.email))
 
     if (!user) {
-        return NextResponse.json({ success: false, code: 'USER_NOT_FOUND' }, { status: 404 })
+        return NextResponse.json({ success: false, code: 'ERROR_USER_NOT_FOUND' }, { status: 404 })
     }
 
     const token = jwt.sign(

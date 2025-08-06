@@ -1,3 +1,4 @@
+'use client'
 import {CardWrapper} from "@shared/components/ui";
 import {TelegramForm} from "@/app/dashboard/telegram/form";
 
