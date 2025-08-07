@@ -1,4 +1,4 @@
-import { boolean, pgTable, serial, text, timestamp, uuid } from 'drizzle-orm/pg-core'
+import {boolean, integer, pgTable, serial, text, timestamp, uuid} from 'drizzle-orm/pg-core'
 
 export const users = pgTable('users', {
     id: serial('id').primaryKey(),
@@ -24,6 +24,7 @@ export const telegramPosts = pgTable('telegram_posts', {
     content: text('content').notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
     image_url: text('image_url'),
+    userId: integer('user_id').notNull().references(() => users.id),
 });
 
 
@@ -31,4 +32,5 @@ export const telegramChannels = pgTable('telegram_channels', {
     id: serial('id').primaryKey(),
     channel: text('channel').notNull().unique(),
     created_at: timestamp('created_at', { withTimezone: true }).defaultNow(),
+    userId: integer('user_id').notNull().references(() => users.id),
 });

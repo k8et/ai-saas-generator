@@ -7,6 +7,7 @@ import {
   telegramChannelSchema,
   TelegramChannelSchema,
 } from '@/app/dashboard/telegram/components/AddTelegramChannelModal/schema'
+import {getUserFromCookie} from "@shared/lib/getUserFromCookie";
 
 export async function addTelegramChannel(data: TelegramChannelSchema) {
   const parsed = telegramChannelSchema.safeParse(data)
@@ -30,8 +31,18 @@ export async function addTelegramChannel(data: TelegramChannelSchema) {
       }
     }
 
+    const user = await getUserFromCookie()
+
+    if (!user) {
+      return {
+        error: 'ERROR_UNAUTHORIZED',
+        message: 'MESSAGE_NEED_AUTHORIZATION',
+      }
+    }
+
     await db.insert(telegramChannels).values({
       channel: parsed.data.channel,
+      userId: user.id,
     })
 
     return {
