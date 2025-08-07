@@ -1,7 +1,6 @@
 'use client'
 
 import { Button, Input } from '@shared/components/ui'
-import React, { useState } from 'react'
 import {
   Dialog,
   DialogBackdrop,
@@ -19,9 +18,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { addTelegramChannel } from '@/app/dashboard/telegram/components/AddTelegramChannelModal/actions'
 import {mutate} from "swr";
 import {TELEGRAM_CHANNELS_KEY} from "@/app/dashboard/telegram/hooks";
+import {useDisclose} from "@shared/hooks";
 
 export const AddTelegramChannelModal = () => {
-  const [open, setOpen] = useState(false)
+  const {isOpen, toggle} = useDisclose()
 
   const {
     register,
@@ -44,7 +44,7 @@ export const AddTelegramChannelModal = () => {
     }
     await mutate(TELEGRAM_CHANNELS_KEY)
     reset()
-    setOpen(false)
+    toggle()
   }
 
   return (
@@ -52,12 +52,12 @@ export const AddTelegramChannelModal = () => {
       <button
         className={'hover:text-foreground/50 text-sm font-semibold transition active:scale-[0.97]'}
         type={'button'}
-        onClick={() => setOpen(true)}
+        onClick={toggle}
       >
         + Добавить телеграм канал
       </button>
 
-      <Dialog open={open} onClose={() => setOpen(false)}>
+      <Dialog open={isOpen} onClose={toggle}>
         <DialogBackdrop />
 
         <DialogPanel from='top'>
@@ -78,7 +78,7 @@ export const AddTelegramChannelModal = () => {
               className='sm:w-[40%]'
               type='button'
               variant='secondary'
-              onClick={() => setOpen(false)}
+              onClick={toggle}
             >
               Отмена
             </Button>

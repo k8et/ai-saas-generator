@@ -6,8 +6,12 @@ import { Button, Textarea, Select } from '@shared/components/ui'
 import { TelegramSchema, telegramSchema } from '@/app/dashboard/telegram/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AddTelegramChannelModal } from '@/app/dashboard/telegram/components/AddTelegramChannelModal/AddTelegramChannelModal'
-import { generateAndSendPost } from '@/app/dashboard/telegram/actions'
+import { generateTelegramPost } from '@/app/dashboard/telegram/actions'
 import { useTelegramChannels } from '@/app/dashboard/telegram/hooks'
+import { PreviewTelegramPostModal } from '@/app/dashboard/telegram/components/PreviewTelegramPostModal'
+import { useDisclose } from '@shared/hooks'
+import { useState } from 'react'
+import { TelegramGeneratedPostSuccess } from '@/app/dashboard/telegram/types'
 
 const styleOptions = [
   { label: 'Формальный', value: 'formal' },
@@ -25,6 +29,8 @@ const styleOptions = [
 ]
 
 export const TelegramForm = () => {
+  const { isOpen, toggle } = useDisclose()
+  const [post, setPost] = useState<TelegramGeneratedPostSuccess | null>(null)
   const { data: channels = [], isLoading } = useTelegramChannels()
   const {
     register,
@@ -43,7 +49,13 @@ export const TelegramForm = () => {
   })
 
   const onSubmit = async (data: TelegramSchema) => {
-    await generateAndSendPost(data)
+    const post = await generateTelegramPost(data)
+
+    if ('error' in post) return
+
+    setPost(post)
+
+    toggle()
   }
 
   return (
@@ -120,6 +132,7 @@ export const TelegramForm = () => {
         </Button>
       </form>
       <AddTelegramChannelModal />
+      <PreviewTelegramPostModal isOpen={isOpen} post={post} onToggleAction={toggle} />
     </div>
   )
 }

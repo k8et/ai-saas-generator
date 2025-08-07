@@ -81,31 +81,36 @@ export const Select = ({
 
       <AnimatePresence>
         {open && (
-          <motion.ul
-            initial={{ opacity: 0, scale: 0.95, y: -5 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: -5 }}
-            transition={{ duration: 0.15 }}
-            className={cn(
-                'absolute z-50 w-full max-h-[200px] overflow-y-auto rounded-md border bg-popover text-sm',
-                'scroll-hidden',
-            )}
-
-          >
-            {options.map((opt) => (
-              <li
-                key={opt.value}
-                onClick={() => !opt.disabled && handleSelect(opt.value)}
+            <motion.ul
+                initial={{ opacity: 0, scale: 0.95, y: -5 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: -5 }}
+                transition={{ duration: 0.15 }}
                 className={cn(
-                  'hover:bg-accent/40 cursor-pointer px-3 py-2 transition-colors',
-                  opt.disabled && 'pointer-events-none opacity-40',
-                  value === opt.value && 'bg-muted font-medium'
+                    'absolute z-50 w-full max-h-[200px] shadow overflow-y-auto rounded-md border bg-popover text-sm',
+                    'scroll-hidden',
                 )}
-              >
-                {opt.label}
-              </li>
-            ))}
-          </motion.ul>
+            >
+              {options.length === 0 ? (
+                  <li className="px-3 py-2 text-muted-foreground cursor-default select-none">
+                    Ничего не найдено
+                  </li>
+              ) : (
+                  options.map((opt) => (
+                      <li
+                          key={opt.value}
+                          onClick={() => !opt.disabled && handleSelect(opt.value)}
+                          className={cn(
+                              'hover:bg-accent/40 cursor-pointer px-3 py-2 transition-colors',
+                              opt.disabled && 'pointer-events-none opacity-40',
+                              value === opt.value && 'bg-muted font-medium'
+                          )}
+                      >
+                        {opt.label}
+                      </li>
+                  ))
+              )}
+            </motion.ul>
         )}
       </AnimatePresence>
 
