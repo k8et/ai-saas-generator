@@ -20,5 +20,3 @@ export function formatTelegramPrompt({
   return parts.filter(Boolean).join('. ') + '.';
 }
 
-
-

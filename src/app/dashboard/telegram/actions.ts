@@ -5,15 +5,16 @@ import { telegramChannels, telegramPosts } from '@/db/schema'
 import { TelegramSchema, telegramSchema } from '@/app/dashboard/telegram/schema'
 import {
   formatTelegramPrompt,
-  generateTelegramPostContent,
-  generateTelegramPostImage,
 } from '@/app/dashboard/telegram/utils'
 import { getUserFromCookie } from '@shared/lib/getUserFromCookie'
-import {eq} from 'drizzle-orm'
-import {TelegramGeneratedPostType} from "@/app/dashboard/telegram/types";
+import { eq } from 'drizzle-orm'
+import { TelegramGeneratedPostType } from '@/app/dashboard/telegram/types'
+import { generateTextWithPerplexity } from '@shared/lib/ai'
+import { generateTelegramPostWithImage } from '@shared/lib/tg'
 
-
-export async function generateTelegramPost(data: TelegramSchema): Promise<TelegramGeneratedPostType> {
+export async function generateTelegramPost(
+  data: TelegramSchema
+): Promise<TelegramGeneratedPostType> {
   const parsed = telegramSchema.safeParse(data)
   if (!parsed.success) {
     return { error: 'ERROR_GENERATE_INVALID_DATA' }
@@ -22,12 +23,12 @@ export async function generateTelegramPost(data: TelegramSchema): Promise<Telegr
   const { description, style, emoji, hashtag, tg_chanel } = parsed.data
   const prompt = formatTelegramPrompt({ description, style, emoji, hashtag, tg_chanel })
 
-  const postResult = await generateTelegramPostContent(prompt)
+  const postResult = await generateTextWithPerplexity(prompt)
   if ('error' in postResult) return { error: postResult.error }
 
   const content = postResult.data
 
-  const imageResult = await generateTelegramPostImage(description)
+  const imageResult = await generateTelegramPostWithImage(description)
   if ('error' in imageResult) return { error: imageResult.error }
 
   const image_url = imageResult.data

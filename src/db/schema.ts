@@ -28,6 +28,16 @@ export const telegramPosts = pgTable('telegram_posts', {
 });
 
 
+export const tikTok = pgTable('tik_tok', {
+    id: serial('id').primaryKey(),
+    description: text('description').notNull(),
+    style: text('style').notNull(),
+    content: text('content').notNull(), // ← добавь это поле
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    userId: integer('user_id').notNull().references(() => users.id),
+})
+
+
 export const telegramChannels = pgTable('telegram_channels', {
     id: serial('id').primaryKey(),
     channel: text('channel').notNull().unique(),
