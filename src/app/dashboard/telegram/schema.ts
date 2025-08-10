@@ -10,6 +10,8 @@ export const telegramSchema = z.object({
   hashtag: z.boolean(),
 
   tg_chanel: z.string().min(1, { message: 'Выберите телеграм канал' }),
+
+  generateImage: z.boolean().default(false),
 })
 
 export type TelegramSchema = z.infer<typeof telegramSchema>

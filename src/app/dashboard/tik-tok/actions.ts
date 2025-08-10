@@ -4,7 +4,7 @@ import { db } from '@/db'
 import { tikTok } from '@/db/schema'
 import { getUserFromCookie } from '@shared/lib/getUserFromCookie'
 import { tikTokSchema, TikTokSchema } from '@/app/dashboard/tik-tok/schema'
-import { generateTextWithPerplexity } from '@shared/lib/ai'
+import { generateTextWithOpenai } from '@shared/lib/ai'
 
 export async function generateTikTokScenario(data: TikTokSchema) {
   const parsed = tikTokSchema.safeParse(data)
@@ -15,7 +15,7 @@ export async function generateTikTokScenario(data: TikTokSchema) {
   const { description, style } = parsed.data
   const prompt = `Сгенерируй сценарий TikTok в стиле "${style}" на тему: ${description}. Структура: интро, основная часть, концовка. Без хештегов. Не указывать никаких ссылок.`
 
-  const postResult = await generateTextWithPerplexity(prompt)
+  const postResult = await generateTextWithOpenai(prompt)
   if ('error' in postResult) return { error: postResult.error }
 
   const content = postResult.data

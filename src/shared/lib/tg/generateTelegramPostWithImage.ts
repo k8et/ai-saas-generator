@@ -25,7 +25,7 @@ export async function generateTelegramPostWithImage(description: string): Promis
     const json = await response.json();
     const url = json.data?.[0]?.url;
     if (!url) {
-      console.error('[OpenAI] No image URL in response:', json);
+      console.error('[OpenAI] No image-generator URL in response:', json);
       return { error: 'ERROR_GENERATE_IMAGE_NO_URL' };
     }
     return { data: url };

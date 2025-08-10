@@ -19,10 +19,11 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang='en' className={`${nunitoSans.variable}`}>
-      <body className='antialiased'>
-        <GlobalNavigationListener />
-        <ThemeProvider>{children}</ThemeProvider>
-      </body>
+    <body className='antialiased'>
+    <GlobalNavigationListener />
+    <ThemeProvider>{children}</ThemeProvider>
+    <div id="modal-root"></div>
+    </body>
     </html>
   )
 }

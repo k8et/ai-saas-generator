@@ -1,6 +1,6 @@
 'use client'
 
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, Resolver } from 'react-hook-form'
 import { Checkbox } from '@/shared/components/ui/Checkbox/Checkbox'
 import { Button, Textarea, Select } from '@shared/components/ui'
 import { TelegramSchema, telegramSchema } from '@/app/dashboard/telegram/schema'
@@ -25,13 +25,14 @@ export const TelegramForm = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<TelegramSchema>({
-    resolver: zodResolver(telegramSchema),
+    resolver: zodResolver(telegramSchema) as Resolver<TelegramSchema>,
     defaultValues: {
       style: '',
       tg_chanel: '',
       emoji: false,
       hashtag: false,
       description: '',
+      generateImage: false,
     },
   })
 
@@ -108,6 +109,19 @@ export const TelegramForm = () => {
             <Checkbox
               label='Добавить хештеги'
               error={errors.hashtag?.message}
+              checked={field.value}
+              onCheckedChange={(val) => field.onChange(!!val)}
+            />
+          )}
+        />
+
+        <Controller
+          name='generateImage'
+          control={control}
+          render={({ field }) => (
+            <Checkbox
+              label='С изображением'
+              error={errors.generateImage?.message}
               checked={field.value}
               onCheckedChange={(val) => field.onChange(!!val)}
             />

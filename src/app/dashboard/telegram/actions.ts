@@ -3,13 +3,11 @@
 import { db } from '@/db'
 import { telegramChannels, telegramPosts } from '@/db/schema'
 import { TelegramSchema, telegramSchema } from '@/app/dashboard/telegram/schema'
-import {
-  formatTelegramPrompt,
-} from '@/app/dashboard/telegram/utils'
+import { formatTelegramPrompt } from '@/app/dashboard/telegram/utils'
 import { getUserFromCookie } from '@shared/lib/getUserFromCookie'
 import { eq } from 'drizzle-orm'
 import { TelegramGeneratedPostType } from '@/app/dashboard/telegram/types'
-import { generateTextWithPerplexity } from '@shared/lib/ai'
+import { generateTextWithOpenai } from '@shared/lib/ai'
 import { generateTelegramPostWithImage } from '@shared/lib/tg'
 
 export async function generateTelegramPost(
@@ -20,20 +18,21 @@ export async function generateTelegramPost(
     return { error: 'ERROR_GENERATE_INVALID_DATA' }
   }
 
-  const { description, style, emoji, hashtag, tg_chanel } = parsed.data
-  const prompt = formatTelegramPrompt({ description, style, emoji, hashtag, tg_chanel })
+  const { description, style, emoji, hashtag, tg_chanel, generateImage } = parsed.data
+  const prompt = formatTelegramPrompt({ description, style, emoji, hashtag, tg_chanel,generateImage })
 
-  const postResult = await generateTextWithPerplexity(prompt)
+  const postResult = await generateTextWithOpenai(prompt)
   if ('error' in postResult) return { error: postResult.error }
-
   const content = postResult.data
 
-  const imageResult = await generateTelegramPostWithImage(description)
-  if ('error' in imageResult) return { error: imageResult.error }
+  let image_url: string | null = null
+  if (generateImage) {
+    const imageResult = await generateTelegramPostWithImage(description)
+    if ('error' in imageResult) return { error: imageResult.error }
+    image_url = imageResult.data
+  }
 
-  const image_url = imageResult.data
   const user = await getUserFromCookie()
-
   if (!user) {
     return {
       error: 'ERROR_UNAUTHORIZED',
@@ -70,7 +69,10 @@ export async function getTelegramChannels() {
     throw new Error('ERROR_USER_GET')
   }
 
-  const rows = await db.select().from(telegramChannels).where(eq(telegramChannels.userId, user.id))
+  const rows = await db
+    .select()
+    .from(telegramChannels)
+    .where(eq(telegramChannels.userId, user.id))
 
   return rows.map((r) => ({
     value: r.channel,

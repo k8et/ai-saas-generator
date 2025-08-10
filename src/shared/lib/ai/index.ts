@@ -1,2 +1,2 @@
-export * from './generateTextWithPerplexity'
+export * from './generateTextWithOpenai'
 export * from './openai'

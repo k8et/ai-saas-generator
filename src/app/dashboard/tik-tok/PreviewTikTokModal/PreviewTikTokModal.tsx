@@ -1,21 +1,14 @@
 'use client'
 
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogFooter,
-  DialogHeader,
-  DialogPanel,
-  DialogTitle,
-} from '@shared/components/ui/Dialog'
 import { Button } from '@shared/components/ui'
+import { ModalWrapper } from '@shared/components/ui/ModalWrapper'
 import { TikTokGeneratedPostSuccess } from '@/app/dashboard/tik-tok/types'
 
 export const PreviewTikTokModal = ({
-  isOpen,
-  post,
-  onToggleAction,
-}: {
+                                     isOpen,
+                                     post,
+                                     onToggleAction,
+                                   }: {
   isOpen: boolean
   post: TikTokGeneratedPostSuccess | null
   onToggleAction: () => void
@@ -25,25 +18,23 @@ export const PreviewTikTokModal = ({
   const { content } = post
 
   return (
-    <Dialog open={isOpen} onClose={onToggleAction}>
-      <DialogBackdrop />
-      <DialogPanel from='top'>
-        <DialogHeader>
-          <DialogTitle>Сценарий TikTok видео</DialogTitle>
-        </DialogHeader>
-
+    <ModalWrapper
+      isOpen={isOpen}
+      onOpenChangeAction={onToggleAction}
+      from='top'
+      header={'Сценарий TikTok видео'}
+      body={
         <div className='text-default-700 max-h-[500px] space-y-3 overflow-y-auto text-sm'>
           <div className='bg-muted mt-1 rounded-md p-3 text-sm leading-relaxed whitespace-pre-wrap'>
             {content}
           </div>
         </div>
-
-        <DialogFooter>
-          <Button className='w-full' type='button' variant='secondary' onClick={onToggleAction}>
-            Закрыть
-          </Button>
-        </DialogFooter>
-      </DialogPanel>
-    </Dialog>
+      }
+      footer={
+        <Button className='w-full' type='button' variant='secondary' onClick={onToggleAction}>
+          Закрыть
+        </Button>
+      }
+    />
   )
 }
