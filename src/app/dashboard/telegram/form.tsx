@@ -1,6 +1,6 @@
 'use client'
 
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, Resolver } from 'react-hook-form'
 import { Checkbox } from '@/shared/components/ui/Checkbox/Checkbox'
 import { Button, Textarea, Select } from '@shared/components/ui'
 import { TelegramSchema, telegramSchema } from '@/app/dashboard/telegram/schema'
@@ -12,21 +12,8 @@ import { PreviewTelegramPostModal } from '@/app/dashboard/telegram/components/Pr
 import { useDisclose } from '@shared/hooks'
 import { useState } from 'react'
 import { TelegramGeneratedPostSuccess } from '@/app/dashboard/telegram/types'
+import { styleOptions } from '@shared/constants/styleOptions'
 
-const styleOptions = [
-  { label: 'Формальный', value: 'formal' },
-  { label: 'Разговорный', value: 'casual' },
-  { label: 'Ироничный', value: 'ironic' },
-  { label: 'Эмоциональный', value: 'emotional' },
-  { label: 'Информативный', value: 'informative' },
-  { label: 'Провокационный', value: 'provocative' },
-  { label: 'Мотивационный', value: 'motivational' },
-  { label: 'Экспертный', value: 'expert' },
-  { label: 'Рекламный', value: 'promo' },
-  { label: 'Новостной', value: 'news' },
-  { label: 'Технический', value: 'technical' },
-  { label: 'Юмористический', value: 'funny' },
-]
 
 export const TelegramForm = () => {
   const { isOpen, toggle } = useDisclose()
@@ -38,13 +25,14 @@ export const TelegramForm = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<TelegramSchema>({
-    resolver: zodResolver(telegramSchema),
+    resolver: zodResolver(telegramSchema) as Resolver<TelegramSchema>,
     defaultValues: {
       style: '',
       tg_chanel: '',
       emoji: false,
       hashtag: false,
       description: '',
+      generateImage: false,
     },
   })
 
@@ -121,6 +109,19 @@ export const TelegramForm = () => {
             <Checkbox
               label='Добавить хештеги'
               error={errors.hashtag?.message}
+              checked={field.value}
+              onCheckedChange={(val) => field.onChange(!!val)}
+            />
+          )}
+        />
+
+        <Controller
+          name='generateImage'
+          control={control}
+          render={({ field }) => (
+            <Checkbox
+              label='С изображением'
+              error={errors.generateImage?.message}
               checked={field.value}
               onCheckedChange={(val) => field.onChange(!!val)}
             />

@@ -1,16 +1,17 @@
-'use client';
+'use client'
 
-import * as React from 'react';
-import {Button, Dialog, DialogBackdrop, DialogFooter, DialogPanel, DialogTitle} from "@shared/components/ui";
+import * as React from 'react'
+import { Button } from '@shared/components/ui'
+import { ModalWrapper } from '@shared/components/ui/ModalWrapper'
 
 interface AlertDialogProps {
-    open: boolean;
-    title?: string;
-    description?: string;
-    confirmText?: string;
-    cancelText?: string;
-    onConfirm: () => void;
-    onCancel: () => void;
+  open: boolean
+  title?: string
+  description?: string
+  confirmText?: string
+  cancelText?: string
+  onConfirm: () => void
+  onCancel: () => void
 }
 
 export function AlertDialog({
@@ -23,18 +24,20 @@ export function AlertDialog({
   onCancel,
 }: AlertDialogProps) {
   return (
-    <Dialog open={open} onClose={onCancel}>
-      <DialogBackdrop />
-      <DialogPanel from='top'>
-        <DialogTitle>{title}</DialogTitle>
-        {description && <p className='text-muted-foreground mt-2 text-sm'>{description}</p>}
-        <DialogFooter className='mt-4'>
-          <Button variant='outline' onClick={onCancel}>
+    <ModalWrapper
+      isOpen={open}
+      onOpenChangeAction={onCancel}
+      from='top'
+      header={title}
+      body={description && <p className='text-muted-foreground mt-2 text-sm'>{description}</p>}
+      footer={
+        <div className='flex gap-2'>
+          <Button type="button" variant='outline' onClick={onCancel}>
             {cancelText}
           </Button>
-          <Button onClick={onConfirm}>{confirmText}</Button>
-        </DialogFooter>
-      </DialogPanel>
-    </Dialog>
+          <Button type="button" onClick={onConfirm}>{confirmText}</Button>
+        </div>
+      }
+    />
   )
 }

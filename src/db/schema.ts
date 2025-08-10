@@ -28,6 +28,28 @@ export const telegramPosts = pgTable('telegram_posts', {
 });
 
 
+export const tikTok = pgTable('tik_tok', {
+    id: serial('id').primaryKey(),
+    description: text('description').notNull(),
+    style: text('style').notNull(),
+    content: text('content').notNull(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    userId: integer('user_id').notNull().references(() => users.id),
+})
+
+export const image = pgTable('image', {
+    id: serial('id').primaryKey(),
+    description: text('description').notNull(),
+    type: text('type').notNull(),
+    model: text('model').notNull(),
+    size: text('size').notNull(),
+    prompt: text('prompt').notNull(),
+    imageUrl: text('image_url').notNull(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    userId: integer('user_id').notNull().references(() => users.id),
+})
+
+
 export const telegramChannels = pgTable('telegram_channels', {
     id: serial('id').primaryKey(),
     channel: text('channel').notNull().unique(),

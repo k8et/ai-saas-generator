@@ -1,105 +1,19 @@
 import { TelegramSchema } from '@/app/dashboard/telegram/schema'
 
-export function formatTelegramPrompt({
-                                       description,
-                                       style,
-                                       emoji,
-                                       hashtag,
-                                     }: TelegramSchema) {
+export function formatTelegramPrompt({ description, style, emoji, hashtag }: TelegramSchema) {
   const parts = [
-    `Напиши один короткий пост для Telegram (до 1000 символов) на тему: "${description}"`,
-    `стиль: "${style}"`,
-    emoji ? 'добавь уместные эмодзи без перебора' : '',
-    hashtag ? 'в конце добавь 2–3 тематических хэштега без решёток' : '',
-    'не вставляй ссылки, источники, даты или сноски',
-    'не используй форматирование, Markdown и HTML',
-    'не делай абзацы — текст должен быть в одном блоке',
-    'ориентируйся на естественный стиль для соцсетей',
-  ];
+    `Ты — автор постов для Telegram.`,
+    `Создай ОДИН короткий пост (до 1000 символов) на тему: "${description}".`,
+    `Стиль текста: "${style}".`,
+    emoji ? 'Добавь уместные эмодзи без перебора.' : '',
+    hashtag ? 'В конце добавь 2–3 тематических хэштега.' : '',
+    'Не вставляй ссылки, источники, даты или сноски.',
+    'Не используй форматирование, Markdown и HTML.',
+    'Не делай абзацы — текст должен быть в одном блоке.',
+    'Ориентируйся на естественный стиль для соцсетей.',
+    'СТРОГО запрещено: предлагать другие варианты тем, монеты, валюты, курсы, списки, советы, обучающие материалы, ссылки, рекламу или пояснения.',
+    'Отвечай только готовым текстом поста без комментариев и пояснений.',
+  ]
 
-  return parts.filter(Boolean).join('. ') + '.';
+  return parts.filter(Boolean).join(' ')
 }
-
-
-type ApiResponse<T> = { data: T } | { error: string };
-
-export async function generateTelegramPostContent(prompt: string): Promise<ApiResponse<string>> {
-
-  try {
-    const response = await fetch('https://api.perplexity.ai/chat/completions', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${process.env.PERPLEXITY_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'sonar-pro',
-        messages: [{ role: 'user', content: prompt }],
-      }),
-    });
-
-    const raw = await response.text();
-
-    if (!response.ok) {
-      console.error(`[Perplexity] API error: ${response.status}`);
-      return { error: 'ERROR_GENERATE_CONTENT_API_FAILED' };
-    }
-
-    let json;
-    try {
-      json = JSON.parse(raw);
-    } catch (e) {
-      console.error('[Perplexity] Invalid JSON:', e);
-      return { error: 'ERROR_GENERATE_CONTENT_INVALID_JSON' };
-    }
-
-    const content = json.choices?.[0]?.message?.content?.trim();
-
-    if (!content) {
-      console.error('[Perplexity] No content in response:', json);
-      return { error: 'ERROR_GENERATE_CONTENT_NO_CONTENT' };
-    }
-
-    return { data: content };
-  } catch (error) {
-    console.error('[Perplexity] Request failed:', error);
-    return { error: 'ERROR_GENERATE_CONTENT_REQUEST_FAILED' };
-  }
-}
-
-
-export async function generateTelegramPostImage(description: string): Promise<ApiResponse<string>> {
-  try {
-    const response = await fetch('https://api.openai.com/v1/images/generations', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'dall-e-3',
-        prompt: `Создай изображение для Telegram-поста: ${description}`,
-        size: '1024x1024',
-        quality: 'standard',
-        n: 1,
-      }),
-    });
-
-    if (!response.ok) {
-      console.error(`[OpenAI] API error: ${response.status}`);
-      return { error: 'ERROR_GENERATE_IMAGE_API_FAILED' };
-    }
-
-    const json = await response.json();
-    const url = json.data?.[0]?.url;
-    if (!url) {
-      console.error('[OpenAI] No image URL in response:', json);
-      return { error: 'ERROR_GENERATE_IMAGE_NO_URL' };
-    }
-    return { data: url };
-  } catch (error) {
-    console.error('[OpenAI] Request failed:', error);
-    return { error: 'ERROR_GENERATE_IMAGE_REQUEST_FAILED' };
-  }
-}
-

@@ -18,7 +18,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { href: appRoutes.TELEGRAM_ROUTE, label: 'Telegram', icon: '📬' },
   { href: appRoutes.TIK_TOK_ROUTE, label: 'TikTok', icon: '🎬' },
-  { href: '/dashboard/profile', label: 'Профиль', icon: '👤' },
+  { href: appRoutes.IMAGE_GENERATOR_ROUTE, label: 'Изображение', icon: '👤' },
 ]
 export const Sidebar = () => {
   const { data, isLoading } = useUserInfo()

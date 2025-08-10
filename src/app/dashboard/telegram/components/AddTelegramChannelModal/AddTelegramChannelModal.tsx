@@ -1,14 +1,6 @@
 'use client'
 
 import { Button, Input } from '@shared/components/ui'
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogFooter,
-  DialogHeader,
-  DialogPanel,
-  DialogTitle,
-} from '@shared/components/ui/Dialog'
 import { useForm } from 'react-hook-form'
 import {
   telegramChannelSchema,
@@ -16,24 +8,25 @@ import {
 } from '@/app/dashboard/telegram/components/AddTelegramChannelModal/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { addTelegramChannel } from '@/app/dashboard/telegram/components/AddTelegramChannelModal/actions'
-import {mutate} from "swr";
-import {TELEGRAM_CHANNELS_KEY} from "@/app/dashboard/telegram/hooks";
-import {useDisclose} from "@shared/hooks";
+import { mutate } from 'swr'
+import { TELEGRAM_CHANNELS_KEY } from '@/app/dashboard/telegram/hooks'
+import { useDisclose } from '@shared/hooks'
+import { ModalWrapper } from '@shared/components/ui/ModalWrapper'
 
 export const AddTelegramChannelModal = () => {
-  const {isOpen, toggle} = useDisclose()
+  const { isOpen, toggle } = useDisclose()
 
   const {
     register,
     handleSubmit,
     setError,
-      reset,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<TelegramChannelSchema>({
     resolver: zodResolver(telegramChannelSchema),
   })
 
-  const onSubmit = async (data: TelegramChannelSchema) => {
+  const onSubmitAction = async (data: TelegramChannelSchema) => {
     const res = await addTelegramChannel(data)
     if ('error' in res) {
       setError('channel', {
@@ -50,21 +43,20 @@ export const AddTelegramChannelModal = () => {
   return (
     <>
       <button
-        className={'hover:text-foreground/50 text-sm font-semibold transition active:scale-[0.97]'}
-        type={'button'}
+        className='hover:text-foreground/50 text-sm font-semibold transition active:scale-[0.97]'
+        type='button'
         onClick={toggle}
       >
         + Добавить телеграм канал
       </button>
 
-      <Dialog open={isOpen} onClose={toggle}>
-        <DialogBackdrop />
-
-        <DialogPanel from='top'>
-          <DialogHeader>
-            <DialogTitle>Добавить Telegram канал</DialogTitle>
-          </DialogHeader>
-          <form id='telegram-channel-form' onSubmit={handleSubmit(onSubmit)} className='space-y-2'>
+      <ModalWrapper
+        isOpen={isOpen}
+        onOpenChangeAction={toggle}
+        from='top'
+        header={'Добавить Telegram канал'}
+        body={
+          <form id='telegram-channel-form' onSubmit={handleSubmit(onSubmitAction)} className='space-y-2'>
             <Input
               label='Название канала'
               placeholder='@example_channel'
@@ -72,8 +64,9 @@ export const AddTelegramChannelModal = () => {
               error={errors.channel?.message}
             />
           </form>
-
-          <DialogFooter>
+        }
+        footer={
+          <div className='flex flex-col-reverse gap-2 sm:flex-row sm:justify-end'>
             <Button
               className='sm:w-[40%]'
               type='button'
@@ -90,9 +83,9 @@ export const AddTelegramChannelModal = () => {
             >
               Добавить
             </Button>
-          </DialogFooter>
-        </DialogPanel>
-      </Dialog>
+          </div>
+        }
+      />
     </>
   )
 }
