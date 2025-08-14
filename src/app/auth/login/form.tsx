@@ -25,7 +25,7 @@ export const LoginForm = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className='mt-4 flex flex-col'>
+        <form onSubmit={handleSubmit(onSubmit)} className='mt-1 flex flex-col'>
             <Input
                 autoComplete='username'
                 label='Почта'
@@ -46,6 +46,7 @@ export const LoginForm = () => {
             <Button className='mt-2' type='submit' isLoading={isSubmitting}>
                 Войти
             </Button>
+
         </form>
     )
 }

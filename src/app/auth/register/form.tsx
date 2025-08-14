@@ -52,7 +52,7 @@ export const RegisterForm = () => {
 
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='mt-4 flex flex-col'>
+    <form onSubmit={handleSubmit(onSubmit)} className='mt-1 flex flex-col'>
       <Input
         label='Почта'
         placeholder='example@email.com'
