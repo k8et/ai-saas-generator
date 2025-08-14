@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
@@ -8,17 +8,27 @@ import { cn } from '@shared/lib/utils'
 import { appRoutes } from '@shared/constants/appRoutes'
 import { ProgressLink } from '@shared/components/progress'
 import { useUserInfo } from '@shared/hooks'
+import { ImageIcon, TelegramIcon, TikTokIcon, ClockIcon } from '@/shared/icons'
 
 interface NavItem {
   href: string
   label: string
-  icon: string
+  icon: ReactNode
 }
 
 const navItems: NavItem[] = [
-  { href: appRoutes.TELEGRAM_ROUTE, label: 'Telegram', icon: '📬' },
-  { href: appRoutes.TIK_TOK_ROUTE, label: 'TikTok', icon: '🎬' },
-  { href: appRoutes.IMAGE_GENERATOR_ROUTE, label: 'Изображение', icon: '👤' },
+  {
+    href: appRoutes.TELEGRAM_ROUTE,
+    label: 'Telegram',
+    icon: <TelegramIcon width={24} height={24} />,
+  },
+  { href: appRoutes.TIK_TOK_ROUTE, label: 'TikTok', icon: <TikTokIcon width={24} height={22} /> },
+  {
+    href: appRoutes.IMAGE_GENERATOR_ROUTE,
+    label: 'Изображение',
+    icon: <ImageIcon width={22} height={24} />,
+  },
+  { href: appRoutes.HISTORY_ROUTE, label: 'История', icon: <ClockIcon width={22} height={24} /> },
 ]
 export const Sidebar = () => {
   const { data, isLoading } = useUserInfo()
