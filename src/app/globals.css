@@ -158,3 +158,27 @@
 .scroll-hidden::-webkit-scrollbar {
   display: none;
 }
+
+.animate-border {
+  padding: 12px;
+  border: 3px solid #0000;
+  border-radius: 12px;
+  background: linear-gradient(black, black) padding-box, linear-gradient(
+          var(--angle),
+          #070707,
+          #9698aa
+  ) border-box;
+  animation: 3s rotate linear infinite;
+}
+
+@keyframes rotate {
+  to {
+    --angle: 360deg;
+  }
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}

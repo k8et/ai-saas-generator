@@ -26,7 +26,7 @@ export default function Page() {
                     onChangeTabAction={setTab}
                     content={
                         tab === 'login'
-                          ? <LoginForm setTab={setTab} />
+                          ? <LoginForm  />
                           : <RegisterForm />
                     }
                   />
