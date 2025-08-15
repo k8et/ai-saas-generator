@@ -3,6 +3,7 @@ import { Nunito_Sans } from 'next/font/google'
 import './globals.css'
 import { ReactNode } from 'react'
 import { GlobalNavigationListener } from '@shared/components/progress'
+import React from 'react'
 
 const nunitoSans = Nunito_Sans({
   subsets: ['latin'],
@@ -20,7 +21,9 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     <html lang='en' className={`${nunitoSans.variable}`}>
     <body className='antialiased'>
     <GlobalNavigationListener />
+    <React.StrictMode>
     {children}
+    </React.StrictMode>
     <div id="modal-root"></div>
     </body>
     </html>

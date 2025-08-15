@@ -31,9 +31,10 @@ const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
             onCheckedChange?.(checked)
         }
 
-        const checkboxId = id ?? name ?? `checkbox-${Math.random().toString(36).slice(2, 9)}`
+      const [generatedId] = React.useState(() => `checkbox-${Math.random().toString(36).slice(2, 9)}`)
+      const checkboxId = id ?? name ?? generatedId
 
-        return (
+      return (
             <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-2">
                     <CheckboxPrimitive.Root
