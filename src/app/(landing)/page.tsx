@@ -207,7 +207,7 @@ export default function Page() {
               whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
               transition={{ delay: i * 0.15, duration: 0.6, ease: 'easeOut' }}
               viewport={{ once: true }}
-              className={`bg-card-foreground flex w-full max-w-[438px] flex-col items-start gap-[21px] rounded-[20px] p-[30px] ${
+              className={`bg-card-foreground  flex w-full max-w-[438px] flex-col items-start gap-[21px] rounded-[20px] p-[30px] ${
                 plan.name === 'Basic' ? 'border border-white' : ''
               }`}
               style={{ border: plan.name !== 'Basic' ? `1px solid ${plan.color}` : '' }}

@@ -1,10 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { Tabs } from '@shared/components/ui/Tabs' // упрощённый Tabs
+import { Tabs } from '@shared/components/ui/Tabs'
 import { RegisterForm } from '@/app/auth/register/form'
 import { LoginForm } from '@/app/auth/login/form'
 import Image from 'next/image'
+import {AuthSocialBlock} from "@/app/auth/AuthSocialBlock";
+
 
 export default function Page() {
     const [tab, setTab] = useState('login')
@@ -16,21 +18,23 @@ export default function Page() {
           </div>
 
           <div className="w-full flex items-center justify-center p-3">
-              <div className="w-full max-w-[600px] rounded-lg border bg-card p-[26px]">
+              <div className="w-full max-w-[600px] rounded-lg border bg-card gap-6 flex flex-col p-[26px]">
                   <Tabs
-                    tabs={[
-                        { label: 'Вход', value: 'login' },
-                        { label: 'Регистрация', value: 'register' },
-                    ]}
-                    activeTab={tab}
-                    onChangeTabAction={setTab}
-                    content={
-                        tab === 'login'
-                          ? <LoginForm  />
-                          : <RegisterForm />
-                    }
+                      tabs={[
+                          {label: 'Вход', value: 'login'},
+                          {label: 'Регистрация', value: 'register'},
+                      ]}
+                      activeTab={tab}
+                      onChangeTabAction={setTab}
+                      content={
+                          tab === 'login'
+                              ? <LoginForm/>
+                              : <RegisterForm/>
+                      }
                   />
+                  <AuthSocialBlock/>
               </div>
+
           </div>
       </div>
     )
