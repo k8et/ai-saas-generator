@@ -13,11 +13,11 @@ type PopoverProps = {
 }
 
 export function CustomPopover({
-                                children,
-                                content,
-                                className,
-                                transition = { type: 'spring', stiffness: 300, damping: 20 },
-                              }: PopoverProps) {
+  children,
+  content,
+  className,
+  transition = { type: 'spring', stiffness: 300, damping: 20 },
+}: PopoverProps) {
   const [isOpen, setIsOpen] = React.useState(false)
   const [coords, setCoords] = React.useState({ top: 0, left: 0 })
 
@@ -32,7 +32,7 @@ export function CustomPopover({
         left: rect.left,
       })
     }
-    setIsOpen(prev => !prev)
+    setIsOpen((prev) => !prev)
   }
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -61,7 +61,7 @@ export function CustomPopover({
 
   return (
     <>
-      <div ref={triggerRef} className="inline-block cursor-pointer" onClick={togglePopover}>
+      <div ref={triggerRef} className='inline-block cursor-pointer' onClick={togglePopover}>
         {children}
       </div>
 
@@ -84,7 +84,7 @@ export function CustomPopover({
                   pointerEvents: 'auto',
                 }}
                 className={cn(
-                  'bg-popover text-popover-foreground text-xs px-3 py-2 rounded-md shadow-xl max-w-[300px] text-pretty break-words',
+                  'bg-popover text-popover-foreground max-w-[300px] rounded-md px-3 py-2 text-xs text-pretty break-words shadow-xl',
                   className
                 )}
               >

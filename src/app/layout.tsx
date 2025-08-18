@@ -4,6 +4,7 @@ import './globals.css'
 import { ReactNode } from 'react'
 import { GlobalNavigationListener } from '@shared/components/progress'
 import React from 'react'
+import { ThemeProvider } from '@shared/provider'
 
 const nunitoSans = Nunito_Sans({
   subsets: ['latin'],
@@ -18,14 +19,14 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang='en' className={`${nunitoSans.variable}`}>
-    <body className='antialiased'>
-    <GlobalNavigationListener />
-    <React.StrictMode>
-    {children}
-    </React.StrictMode>
-    <div id="modal-root"></div>
-    </body>
+    <html lang='en' className={`${nunitoSans.variable}`} suppressHydrationWarning>
+      <body className='antialiased'>
+        <GlobalNavigationListener />
+        <ThemeProvider>
+        {children}
+        </ThemeProvider>
+        <div id='modal-root'></div>
+      </body>
     </html>
   )
 }
