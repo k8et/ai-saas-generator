@@ -31,7 +31,7 @@ const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
             onCheckedChange?.(checked)
         }
 
-      const [generatedId] = React.useState(() => `checkbox-${Math.random().toString(36).slice(2, 9)}`)
+      const [generatedId] = React.useState(() => `checkbox-${name}`)
       const checkboxId = id ?? name ?? generatedId
 
       return (
