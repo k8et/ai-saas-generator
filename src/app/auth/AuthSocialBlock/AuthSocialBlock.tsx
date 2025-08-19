@@ -1,10 +1,10 @@
 'use client'
 
 import { signIn } from 'next-auth/react'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { GoogleIcon, TelegramIcon } from '@shared/icons'
 import { Button } from '@shared/components/ui'
-import {appRoutes} from "@shared/constants/appRoutes";
+import { appRoutes } from '@shared/constants/appRoutes'
 
 type TelegramAuthData = {
     id: number
@@ -23,10 +23,8 @@ declare global {
 }
 
 export const AuthSocialBlock = () => {
-    const [showTelegram, setShowTelegram] = useState(false)
-
     useEffect(() => {
-        if (!showTelegram) return
+        if (document.getElementById('telegram-login-script')) return
 
         const script = document.createElement('script')
         script.src = 'https://telegram.org/js/telegram-widget.js?7'
@@ -36,9 +34,10 @@ export const AuthSocialBlock = () => {
         script.setAttribute('data-request-access', 'write')
         script.setAttribute('data-onauth', 'TelegramLoginWidgetCallback(user)')
         script.async = true
+        script.id = 'telegram-login-script'
 
         document.getElementById('telegram-container')?.appendChild(script)
-    }, [showTelegram])
+    }, [])
 
     useEffect(() => {
         window.TelegramLoginWidgetCallback = async (user: TelegramAuthData) => {
@@ -68,16 +67,21 @@ export const AuthSocialBlock = () => {
                 >
                     <GoogleIcon className="min-w-[24px] min-h-[24px]" />
                 </Button>
-                <Button
-                    variant="outline"
-                    className="h-[55px] flex-1"
-                    onClick={() => setShowTelegram(true)}
-                >
-                    <TelegramIcon className="min-w-[24px] min-h-[24px]" />
-                </Button>
-            </div>
 
-            {showTelegram && <div id="telegram-container" className="mt-4" />}
+                <div className="relative h-[55px] flex-1">
+                    <div
+                        id="telegram-container"
+                        className="absolute inset-0 flex items-center justify-center z-0"
+                    />
+
+                    <Button
+                        variant="outline"
+                        className="h-full w-full absolute z-10 pointer-events-none"
+                    >
+                        <TelegramIcon className="min-w-[24px] min-h-[24px]" />
+                    </Button>
+                </div>
+            </div>
         </div>
     )
 }

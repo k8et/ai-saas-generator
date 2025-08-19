@@ -50,8 +50,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Invalid Telegram data' }, { status: 403 })
   }
 
-  const telegramId = String(body.id)
-  const email = `telegram:${telegramId}`
+  const email = body.username ? `@${body.username}` : `ID:${body.id}`
 
   let [user] = await db.select().from(users).where(eq(users.email, email))
 
