@@ -8,10 +8,16 @@ export const authOptions: NextAuthOptions = {
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
         }),
     ],
+    secret: process.env.JWT_SECRET,
+
     callbacks: {
-        async redirect() {
-            return `${process.env.BASE_URL}/api/auth/google/redirect-handler`
+        async redirect({ baseUrl }) {
+            return `${baseUrl}/api/auth/google/redirect-handler`
         },
     },
-    secret: process.env.JWT_SECRET,
+
+    pages: {
+        signIn: '/auth',
+        error: '/auth?error=oauth',
+    },
 }
