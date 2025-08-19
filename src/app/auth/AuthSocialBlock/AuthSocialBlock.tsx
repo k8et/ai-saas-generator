@@ -42,7 +42,7 @@ export const AuthSocialBlock = () => {
 
     useEffect(() => {
         window.TelegramLoginWidgetCallback = async (user: TelegramAuthData) => {
-            const res = await fetch('/api/auth/telegram', {
+            const res = await fetch('/api/auth/telegram/redirect-handler', {
                 method: 'POST',
                 body: JSON.stringify(user),
                 headers: {
