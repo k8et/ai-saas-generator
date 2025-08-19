@@ -63,7 +63,7 @@ export const AuthSocialBlock = () => {
         <Button
           variant='outline'
           className='h-[55px] flex-1 hover:!bg-transparent'
-          onClick={() => signIn('google')}
+          onClick={() => signIn('google', { callbackUrl: '/api/auth/google/redirect-handler' })}
         >
           <GoogleIcon className='min-h-[24px] min-w-[24px]' />
         </Button>

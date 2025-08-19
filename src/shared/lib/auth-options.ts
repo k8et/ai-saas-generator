@@ -10,12 +10,6 @@ export const authOptions: NextAuthOptions = {
     ],
     secret: process.env.JWT_SECRET,
 
-    callbacks: {
-        async redirect({ baseUrl }) {
-            return `${baseUrl}/api/auth/google/redirect-handler`
-        },
-    },
-
     pages: {
         signIn: '/auth',
         error: '/auth?error=oauth',
