@@ -15,7 +15,7 @@ import {
   ClockIcon
 } from '@/shared/icons'
 import { ThemeSwitch } from '@shared/components/ui'
-import {  PanelRightClose, PanelRightOpen } from 'lucide-react'
+import {BadgePercentIcon, PanelRightClose, PanelRightOpen} from 'lucide-react'
 
 interface NavItem {
   href: string
@@ -43,6 +43,11 @@ const navItems: NavItem[] = [
     href: appRoutes.HISTORY_ROUTE,
     label: 'История',
     icon: <ClockIcon width={24} height={24} />,
+  },
+  {
+    href: appRoutes.PRICING_ROUTE,
+    label: 'Тарифы',
+    icon: <BadgePercentIcon width={24} height={24} />,
   },
 ]
 
@@ -85,7 +90,7 @@ export const Sidebar = () => {
         <ThemeSwitch />
       </div>
 
-      <nav className="relative flex flex-col gap-1 p-2">
+      <nav className="relative flex flex-col p-2">
         {navItems.map(({ href, label, icon }) => {
           const isActive = pathname === href
           const isHovered = hovered === href
@@ -119,7 +124,7 @@ export const Sidebar = () => {
               <ProgressLink
                 href={href}
                 className={cn(
-                  'relative z-10 flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200',
+                  'relative z-10 flex items-center gap-2 rounded-md px-3 py-2.5 text-sm font-medium transition-colors duration-200',
                 )}
               >
                 <span>{icon}</span>

@@ -12,6 +12,8 @@ import {
   Sparkles,
 } from 'lucide-react'
 import { StarsBackground } from '@shared/components/ui/StarBackground'
+import { plans } from '@shared/constants/plans'
+import {useState} from "react";
 
 const features = [
   {
@@ -31,53 +33,6 @@ const features = [
   },
 ]
 
-const plans = [
-  {
-    name: 'Free',
-    short: 'Идеально для знакомства с сервисом',
-    color: '#006FEE',
-    icon: <Sparkles className='h-[34px] w-[34px] stroke-[1.5px]' />,
-    price: '0$ – мес',
-    description: [
-      'До 20 генераций в месяц',
-      'TikTok-сценарии и текстовые посты',
-      'Без публикации и изображений',
-    ],
-  },
-  {
-    name: 'Basic',
-    short: 'Для стартапов и индивидуальных пользователей',
-    color: '#FFFFFF',
-    icon: <Sparkles className='h-[34px] w-[34px] stroke-[1.5px]' />,
-    price: '5$ / мес',
-    description: ['AI-powered analytics', 'Basic support', '5 projects limit', 'Access to basic AI tools'],
-  },
-  {
-    name: 'Pro',
-    short: 'Для блогеров и SMM-специалистов',
-    color: '#F5A524',
-    icon: <Sparkles className='h-[34px] w-[34px] stroke-[1.5px]' />,
-    price: '10$ – мес',
-    description: [
-      'Публикация в Telegram',
-      'Генерация изображений',
-      'Планировщик и расширенная история',
-    ],
-  },
-  {
-    name: 'Business',
-    short: 'Для агентств и команд',
-    color: '#17C964',
-    icon: <Sparkles className='h-[34px] w-[34px] stroke-[1.5px]' />,
-    price: '30$ – мес',
-    description: [
-      'Безлимит на генерации',
-      'White-label + приоритетная поддержка',
-      'Интеграции и кастомизация',
-    ],
-  },
-]
-
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 40 },
   visible: (i = 1) => ({
@@ -92,6 +47,8 @@ const fadeInUp: Variants = {
 }
 
 export default function Page() {
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 })
+
   return (
     <div className='flex flex-col bg-black pb-[100px]'>
       <StarsBackground className='absolute inset-0 z-0 h-[1000px]' />
@@ -146,14 +103,14 @@ export default function Page() {
 
       <section
         id='features'
-        className='flex flex-col items-center justify-center gap-9 bg-black px-[20px] py-[100px] text-white'
+        className='relative flex flex-col items-center justify-center gap-9 overflow-hidden px-[20px] py-[100px] text-white'
       >
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className='flex flex-col items-center'
+          className='relative flex flex-col items-center'
         >
           <BadgePercent className='h-[60px] w-[60px] stroke-[1.3px]' />
           <h1 className='text-center text-[clamp(1.75rem,4vw,38px)] font-semibold'>
@@ -161,7 +118,7 @@ export default function Page() {
           </h1>
         </motion.div>
 
-        <div className='grid grid-cols-1 justify-center gap-5  xl:grid-cols-3'>
+        <div className='relative z-10 grid grid-cols-1 justify-center gap-5 xl:grid-cols-3'>
           {features.map((feature, i) => (
             <motion.div
               key={i}
@@ -199,7 +156,7 @@ export default function Page() {
           <h1 className='text-[clamp(1.75rem,4vw,38px)] font-semibold'>Тарифы</h1>
         </motion.div>
 
-        <div className='grid grid-cols-4 justify-center gap-5 max-md:grid-cols-1 max-2xl:grid-cols-2'>
+        <div className='grid grid-cols-4 justify-center gap-5 max-2xl:grid-cols-2 max-md:grid-cols-1'>
           {plans.map((plan, i) => (
             <motion.div
               key={i}
@@ -207,12 +164,22 @@ export default function Page() {
               whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
               transition={{ delay: i * 0.15, duration: 0.6, ease: 'easeOut' }}
               viewport={{ once: true }}
-              className={`bg-card-foreground  flex w-full max-w-[438px] flex-col items-start gap-[21px] rounded-[20px] p-[30px] ${
-                plan.name === 'Basic' ? 'border border-white' : ''
-              }`}
-              style={{ border: plan.name !== 'Basic' ? `1px solid ${plan.color}` : '' }}
-              whileHover={{ scale: 1.03 }}
+              className={`group bg-card-foreground relative flex w-full max-w-[438px] flex-col items-start gap-[21px] overflow-hidden rounded-[20px] p-[30px]`}
+              style={{ border: `1px solid ${plan.color}` }}
+              onMouseMove={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect()
+                setCursorPos({
+                  x: e.clientX - rect.left,
+                  y: e.clientY - rect.top,
+                })
+              }}
             >
+              <motion.div
+                className='pointer-events-none absolute inset-0 z-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100'
+                style={{
+                  background: `radial-gradient(300px circle at ${cursorPos.x}px ${cursorPos.y}px, ${plan.color}55, transparent 80%)`,
+                }}
+              />
               {plan.icon}
               <div className='min-h-[85px]'>
                 <h2 className='text-[clamp(1.25rem,3vw,24px)] font-semibold'>{plan.name}</h2>
@@ -222,7 +189,7 @@ export default function Page() {
               <div className='flex flex-col gap-2 pt-2'>
                 {plan.description.map((line, j) => (
                   <div key={j} className='text-md flex items-center gap-2 text-white'>
-                    <CircleCheckBig className={'text-green-500'} /> {line}
+                    <CircleCheckBig className='text-green-500' /> {line}
                   </div>
                 ))}
               </div>
@@ -233,3 +200,4 @@ export default function Page() {
     </div>
   )
 }
+

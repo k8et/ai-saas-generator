@@ -5,5 +5,6 @@ export const appRoutes = {
     TIK_TOK_ROUTE: "/dashboard/tik-tok",
     IMAGE_GENERATOR_ROUTE: "/dashboard/image-generator",
     HISTORY_ROUTE: "/dashboard/history",
+    PRICING_ROUTE: "/dashboard/pricing",
     AUTH_ROUTE: "/auth",
 }
